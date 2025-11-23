@@ -1,0 +1,21 @@
+# docker scout. This tool is replacement to the older tool, docker scan.
+
+1) let's start with a standard mage to scan using docker scout.
+
+   $ docker scout quickview alpine
+
+2) look for vulnerabilities,
+
+   $ docker scout cves alpine
+
+3) look for bill of material for an image
+
+   $ docker scout sbom alpine
+
+4) Using trivy for image scan.. this time using trivy inside a container.
+
+  $ docker run aquasec/trivy fs .
+
+5) use trivy to scan image
+
+  $ docker run aquasec/trivy image ganeshhp/webserver:112125

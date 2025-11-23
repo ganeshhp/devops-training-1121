@@ -1,0 +1,33 @@
+Exercise-10
+
+1) deploy Volume object in Swarm cluster
+
+Create a file local-volume.yml
+
+version: "3.9"
+
+services:
+  app:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - mylocaldata:/usr/share/nginx/html
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  mylocaldata:
+    driver: local
+
+2) create a local data folder as mylocaldata under, /var/lib/docker/volumes/mylocaldata/_data
+
+3) run command, 
+  $ docker stack deploy -c local-volume.yml mystack 
+
+4) Now Verify using commands,
+
+  $ docker stack services mystack
+  $ docker volume ls

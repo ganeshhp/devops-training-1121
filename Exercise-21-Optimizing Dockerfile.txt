@@ -1,0 +1,21 @@
+Optimizing Dockerfile
+
+1) regularly audit your container images. Validate if a functionality added earlier is still necessary.
+
+2) In the Dockerfile, avoid remote connection in the build stage. SO instead of using ADD use COPY instruction to copy a file from local drive/folder and avoid copying from network resource.
+
+3) avoid stating the image tag / version as "latest" as it can lead to any incorrect image selection as well. Suggest a particular version available for the base image.
+
+4) Avoid using root user inside Image creation and container.
+
+5) create a non-root user.
+   $ RUN useradd -m appuser
+6) switch to the non-root user
+   $ USER appuser
+7) Set working directory for the application where the user has full access.
+   $ WORKDIR /home/appuser
+8) Copy application file to the user home directory to which user has full access
+   $ COPY . .
+9) Run the application as non-root user
+   $ CMD ["./myapp"]
+

@@ -1,0 +1,85 @@
+Exercise -11
+
+Service HealthCheck and Logging configuration
+
+1) create a file service-healthcheck.yml
+------------------------------------------
+version: "3.9"
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+
+    # -----------------------------------------
+    # HEALTHCHECK (native Docker healthcheck)
+    # -----------------------------------------
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+    # -----------------------------------------
+    # LOGGING CONFIGURATION
+    # -----------------------------------------
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+
+      # Optional: Swarm will only route requests
+      # to a container marked HEALTHY
+      endpoint_mode: vip
+
+networks:
+  default:
+    driver: overlay
+--------------------------------------------------
+
+2) run below command to deploy service as stack.
+
+$ docker stack deploy --compose-file healthcheck-logging.yml mystack
+
+3) check the service status using command,
+
+$ docker stack services mystack
+
+4) Check Health status,
+
+$ docker ps
+$ docker inspect <container-id> --format='{{json .State.Health}}'
+
+5) This exercise will help to check, 
+
+1. Healthcheck
+Runs every 10 seconds:
+wget -qO- http://localhost/ || exit 1
+
+Meaning:
+If Nginx does not respond → container becomes unhealthy
+Swarm stops routing traffic to unhealthy tasks
+Swarm may restart the container depending on policy
+
+2. Logging Setup
+Configures Docker log rotation:
+Driver: json-file
+Max per log file: 10 MB
+Keep at most 3 files
+Prevents disk from filling due to logs.
+
+3. Works on Swarm
+Uses only Swarm-compatible features:
+Replicas
+Healthcheck
+Restart policies
+Logging
+Overlay network

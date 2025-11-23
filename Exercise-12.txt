@@ -1,0 +1,23 @@
+Exercise -4 : Working with Trivy and SNYK tools to scan docker images.
+
+1) First install Trivy app.
+
+ Run the command, $ winget install AquaSecurity.Trivy
+
+2) once trivy is installed we can scan image ganeshhp/webserer:112125 using below command.
+
+$ trivy image ganeshhp/webserver:112125
+
+3) Look for High and Critical 
+$ trivy image --severity HIGH,CRITICAL ganeshhp/webserver:112125
+
+4)  Download the SNYK utility from below URL.
+
+https://downloads.snyk.io/cli/latest/snyk-win.exe
+Once downloaded and installed, use SNYK to test
+
+$ snyk --version
+
+$ snyk container test nginx:latest
+
+$ snyk container test myapp:1.0 --severity-threshold=high

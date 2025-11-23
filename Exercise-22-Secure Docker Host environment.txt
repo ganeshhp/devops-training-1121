@@ -1,0 +1,8 @@
+### Secure Docker Host environment
+
+1) navigate to the URL https://www.cisecurity.org/benchmark/docker. This gives the CIS benchmark for Docker host environment.
+2) we can use the docker-bench-security tool.
+
+3) git clone https://github.com/docker/docker-bench-security.git
+
+Once the repo is cloned, navigate to the newly created repo folder and run the script, docker-bench-security.sh
